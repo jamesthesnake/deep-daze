@@ -44,12 +44,24 @@ New simplified notebook [![Open In Colab][colab-badge]][colab-notebook-2]
 [colab-notebook-2]: <https://colab.research.google.com/drive/1_YOHdORb0Fg1Q7vWZ_KlrtFe9Ur3pmVj?usp=sharing>
 [colab-badge]: <https://colab.research.google.com/assets/colab-badge.svg>
 
-This will require that you have an Nvidia GPU
+This will require that you have an Nvidia GPU or AMD GPU
+- Recommended: 16GB VRAM
+- Minimum Requirements: 4GB VRAM (Using VERY LOW settings, see usage instructions below) 
 
 ## Install
 
 ```bash
 $ pip install deep-daze
+```  
+
+### Windows Install
+
+<img src="./instruction_images/Windows/Step_1_DD_Win.png" width="480px"></img>
+
+Presuming Python is installed: 
+- Open command prompt and navigate to the directory of your current version of Python
+```bash
+  pip install deep-daze
 ```
 
 ## Examples
@@ -57,8 +69,17 @@ $ pip install deep-daze
 ```bash
 $ imagine "a house in the forest"
 ```
+For Windows:
+
+<img src="./instruction_images/Windows/Step_2_DD_Win.png" width="480px"></img>
+
+- Open command prompt as administrator
+```bash
+  imagine "a house in the forest"
+```
 
 That's it.
+
 
 If you have enough memory, you can get better quality by adding a `--deeper` flag
 
@@ -86,7 +107,7 @@ SYNOPSIS
 
 POSITIONAL ARGUMENTS
     TEXT
-        (required) A phrase less than 77 characters which you would like to visualize.
+        (required) A phrase less than 77 tokens which you would like to visualize.
 
 FLAGS
     --img=IMAGE_PATH
@@ -97,13 +118,16 @@ FLAGS
         User-created custom CLIP encoding. If used, replaces any text or image that was used.
     --create_story=CREATE_STORY
         Default: False
-        Creates a story by optimizing each epoch on a new sliding-window of the input words. If this is enabled, much longer texts than 77 chars can be used. Requires save_progress to visualize the transitions of the story.
+        Creates a story by optimizing each epoch on a new sliding-window of the input words. If this is enabled, much longer texts than 77 tokens can be used. Requires save_progress to visualize the transitions of the story.
     --story_start_words=STORY_START_WORDS
         Default: 5
         Only used if create_story is True. How many words to optimize on for the first epoch.
     --story_words_per_epoch=STORY_WORDS_PER_EPOCH
         Default: 5
         Only used if create_story is True. How many words to add to the optimization goal per epoch after the first one.
+    --story_separator:
+        Default: None
+        Only used if create_story is True. Defines a separator like '.' that splits the text into groups for each epoch. Separator needs to be in the text otherwise it will be ignored
     --lower_bound_cutout=LOWER_BOUND_CUTOUT
         Default: 0.1
         Lower bound of the sampling of the size of the random cut-out of the SIREN image per batch. Should be smaller than 0.8.
@@ -180,7 +204,7 @@ Technique first devised and shared by <a href="https://twitter.com/quasimondo">M
 Simply specify the path to the image you wish to use, and optionally the number of initial training steps.
 
 ```bash
-$ imagine 'a clear night sky filled with stars' --start-image-path ./cloudy-night-sky.jpg
+$ imagine 'a clear night sky filled with stars' --start_image_path ./cloudy-night-sky.jpg
 ```
 
 Primed starting image
@@ -224,7 +248,7 @@ The network's interpretation:
 
 
 ### New: Create a story
-The regular mode for texts only allows 77 characters. If you want to visualize a full story/paragraph/song/poem, set `create_story` to `True`.
+The regular mode for texts only allows 77 tokens. If you want to visualize a full story/paragraph/song/poem, set `create_story` to `True`.
 
 Given the poem “Stopping by Woods On a Snowy Evening” by Robert Frost - 
 "Whose woods these are I think I know. His house is in the village though; He will not see me stopping here To watch his woods fill up with snow. My little horse must think it queer To stop without a farmhouse near Between the woods and frozen lake The darkest evening of the year. He gives his harness bells a shake To ask if there is some mistake. The only other sound’s the sweep Of easy wind and downy flake. The woods are lovely, dark and deep, But I have promises to keep, And miles to go before I sleep, And miles to go before I sleep.".
